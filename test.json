@@ -1,0 +1,58 @@
+{
+  "symbol": "SH600519",
+  "column": [
+    "timestamp",
+    "volume",
+    "open",
+    "high",
+    "low",
+    "close",
+    "chg",
+    "percent",
+    "turnoverrate",
+    "amount",
+    "volume_post",
+    "amount_post",
+    "pe",
+    "pb",
+    "ps",
+    "pcf",
+    "market_capital",
+    "balance",
+    "hold_volume_cn",
+    "hold_ratio_cn",
+    "net_volume_cn",
+    "hold_volume_hk",
+    "hold_ratio_hk",
+    "net_volume_hk"
+  ],
+  "item": [
+    [
+      1640880000000,
+      2966491,
+      2070.0,
+      2072.98,
+      2028.0,
+      2050.0,
+      -25.0,
+      -1.2,
+      0.24,
+      6.061415344E9,
+      null,
+      null,
+      51.364,
+      14.7705,
+      24.4161,
+      40.6759,
+      2.57520549E12,
+      2.1118724703E10,
+      89681844,
+      7.13,
+      -33317,
+      null,
+      null,
+      null
+    ]
+  ]
+}
+
