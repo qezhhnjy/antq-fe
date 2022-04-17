@@ -18,7 +18,7 @@ const {Meta} = Card;
 const {Search} = Input;
 const {TabPane} = Tabs;
 const {Paragraph, Text,} = Typography;
-const wsInit = (user: API.User) => new WebSocket(`ws://127.0.0.1:11009?username=${user.username}`);
+const wsInit = (user: API.User) => new WebSocket(`ws://120.26.168.94:11009?username=${user.username}`);
 
 const MessageList: React.FC<{ data: any }> = (props) => {
   const {data} = props;
