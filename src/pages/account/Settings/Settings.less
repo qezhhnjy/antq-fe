@@ -1,44 +1,23 @@
-@import '~antd/es/style/themes/default.less';
-
-.left, .right {
-  min-height: 60px;
-  position: relative;
-  left: 10px;
-  display: table;
-  text-align: center;
-  border-radius: 7px;
-  background-color: #9EEA6A;
+/* 定义滚动条高宽及背景
+ 高宽分别对应横竖滚动条的尺寸 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #F5F5F5;
 }
 
-.right { /* 使左右的对话框分开 */
-  top: 20px;
-  left: 150px;
-  background-color: #FC3;
+/* 定义滚动条轨道
+ 内阴影+圆角 */
+::-webkit-scrollbar-track {
+  //-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3);
+  //border-radius:5px;
+  background-color: #F0F0F0;
 }
 
-.left > p, .right > p { /* 使内容居中 */
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 10px;
-}
-
-.left::before, .right::after { /* 用伪类写出小三角形 */
-  content: '';
-  display: block;
-  width: 0;
-  height: 0;
-  border: 16px solid transparent;
-  position: absolute;
-  top: 11px;
-}
-
-/* 分别给左右两边的小三角形定位 */
-.left::before {
-  border-right: 16px solid #9EEA6A;
-  left: -30px;
-}
-
-.right::after {
-  border-left: 16px solid #FC3;
-  right: -30px;
+/* 定义滑块
+ 内阴影+圆角 */
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  //-webkit-box-shadow:inset 0 0 6px rgba(0,0,0,.3);
+  background-color: rgba(22, 184, 243, 0.5);
 }

@@ -54,7 +54,53 @@ const Other: React.FC = () => {
   )
 }
 
-const ChatWindow: React.FC = () => {
+const Message: React.FC<{ current: API.User, message: API.MessageVO }> = (props) => {
+  const {current, message} = props;
+  const {user, time, content} = message;
+  const float = current.username === user.username ? 'right' : 'left';
+
+  if (float === 'left') {
+    return (
+      <Space style={{float: float, marginTop: 5, marginBottom: 5}}>
+        <Avatar src={user.avatar}/>
+        <div style={{
+          backgroundColor: '#FFF',
+          borderRadius: 5,
+          minHeight: 40,
+          display: 'table',
+        }}>
+          <Paragraph style={{
+            display: 'table-cell',
+            verticalAlign: 'middle',
+            padding: '0 10px',
+            maxWidth: 300,
+          }}>{content}</Paragraph>
+        </div>
+      </Space>
+    );
+  } else {
+    return (
+      <Space style={{float: float, marginRight: 15, marginTop: 5, marginBottom: 5}}>
+        <div style={{
+          backgroundColor: 'rgba(22, 184, 243, 0.8)',
+          borderRadius: 5,
+          minHeight: 40,
+          display: 'table',
+        }}>
+          <Paragraph style={{
+            display: 'table-cell',
+            verticalAlign: 'middle',
+            padding: '0 10px',
+          }}>{content}</Paragraph>
+        </div>
+        <Avatar src={user.avatar}/>
+      </Space>
+    );
+  }
+}
+
+const ChatWindow: React.FC<{ current: API.User }> = (props) => {
+  const {current} = props;
 
   return (
     <div>
@@ -63,18 +109,47 @@ const ChatWindow: React.FC = () => {
         ghost={true}
         title={<Text style={{color: ZIMA_BLUE}}>Amy</Text>}
         extra={[]}
-        style={{height: 60}}
-      >
-      </PageHeader>
-      <div style={{height: 440}}>
-        <div className="left">
-          <p>你好，我是卖茶叶的</p>
-        </div>
-        <div className="right">
-          <p>你好，我是种茶的</p>
-        </div>
-      </div>
-      <div style={{height: 200}}>发送</div>
+        style={{height: 60, borderBottom: '1px solid rgba(200,200,200,0.5)'}}
+      />
+      <Space direction='vertical' style={{height: 440, marginLeft: '2%', width: '98%', overflowX: 'auto'}}>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{
+          user: {username: 'Amy', avatar: '/Amy.jpg'},
+          content: '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈'
+        }}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
+        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
+      </Space>
+      <div style={{height: 200, borderTop: '1px solid rgba(200,200,200,0.5)'}}>发送</div>
     </div>
   )
 }
@@ -113,11 +188,11 @@ const AccountSettings: React.FC = () => {
             </Tabs>
           </Space>
         </Col>
-        <Col flex="240px" style={{backgroundColor: '#EEE'}}>
+        <Col flex="240px" style={{backgroundColor: '#EEE', borderRight: '1px solid lightgray'}}>
           {second()}
         </Col>
         <Col flex='auto' style={{backgroundColor: '#F0F0F0'}}>
-          <ChatWindow/>
+          <ChatWindow current={currentUser?.user || {}}/>
         </Col>
       </Row>
     </div>
