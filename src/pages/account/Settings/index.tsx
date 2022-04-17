@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Avatar, Card, Col, Input, message, PageHeader, Row, Space, Tabs, Typography} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
+import {Avatar, Card, Col, Input, PageHeader, Row, Space, Tabs, Typography} from 'antd';
 import {useModel} from 'umi';
 import {
   CodeSandboxOutlined,
@@ -12,11 +12,13 @@ import {ZIMA_BLUE} from "@/utils/common";
 import './Settings.less';
 import "vditor/dist/index.css";
 import Vditor from "vditor";
+import {now} from '@/utils/timeUtil';
 
 const {Meta} = Card;
 const {Search} = Input;
 const {TabPane} = Tabs;
-const {Title, Paragraph, Text, Link} = Typography;
+const {Paragraph, Text,} = Typography;
+const wsInit = (user: API.User) => new WebSocket(`ws://127.0.0.1:11009?username=${user.username}`);
 
 const MessageList: React.FC<{ data: any }> = (props) => {
   const {data} = props;
@@ -56,9 +58,9 @@ const Other: React.FC = () => {
   )
 }
 
-const Message: React.FC<{ current: API.User, message: API.MessageVO }> = (props) => {
-  const {current, message} = props;
-  const {user, time, content} = message;
+const Message: React.FC<{ current: API.User, msg: API.MessageVO }> = (props) => {
+  const {current, msg} = props;
+  const {user, content} = msg;
   const float = current.username === user.username ? 'right' : 'left';
 
   if (float === 'left') {
@@ -101,99 +103,83 @@ const Message: React.FC<{ current: API.User, message: API.MessageVO }> = (props)
   }
 }
 
-const ChatWindow: React.FC<{ current: API.User }> = (props) => {
-  const {current} = props;
-  const [vd, setVd] = useState<Vditor>();
+const ChatWindow: React.FC<{ current: API.User, ws: any, data: API.MessageVO[] }> =
+  (props) => {
+    const {current, ws, data} = props;
 
-  useEffect(() => {
-    const vditor = new Vditor("vditor", {
-      ctrlEnter: (value) => {
-        // TODO 不知道怎么自定义快捷键实现换行
-      },
-      toolbar: ['emoji', {
-        hotkey: 'Enter',
-        name: 'send',
-        tip: '发送',
-        tipPosition: 'n',
-        className: 'right',
-        icon: '<img width=16 style="float: right" src="/send.svg"/>',
-        click() {
-          alert('捐赠地址：https://ld246.com/sponsor')
+    useEffect(() => {
+      const vditor = new Vditor("vditor", {
+        ctrlEnter: () => {
+          // TODO 不知道怎么自定义快捷键实现换行
+        },
+        toolbar: ['emoji', {
+          hotkey: 'Enter',
+          name: 'send',
+          tip: '发送',
+          tipPosition: 'n',
+          className: 'right',
+          icon: '<img width=16 style="float: right" src="/send.svg"/>',
+          click: () => {
+            if (vditor.getValue().trim() === '') return;
+            if (!ws.current) ws.current = wsInit(current)
+            ws.current.send(JSON.stringify({user: current, content: vditor.getValue(), time: now()}));
+            vditor.setValue('');
+          }
+        }],
+        mode: 'ir',
+        width: 'auto',
+        counter: {enable: true, type: 'markdown'},
+        height: 200,
+        preview: {
+          theme: {current: 'light'},
+          hljs: {lineNumber: true, style: 'dracula'},
+          // maxWidth: 200
+        },
+        after: () => {
+          vditor.setValue('');
         }
-      }],
-      mode: 'ir',
-      width: 'auto',
-      counter: {enable: true, type: 'markdown'},
-      height: 200,
-      preview: {
-        theme: {current: 'light'},
-        hljs: {lineNumber: true, style: 'dracula'},
-        // maxWidth: 200
-      },
-      after: () => {
-        vditor.setValue('');
-        setVd(vditor);
-      }
-    });
-  }, []);
+      });
+    }, []);
 
-  return (
-    <div>
-      <PageHeader
-        avatar={{src: '/Amy.jpg'}}
-        ghost={true}
-        title={<Text style={{color: ZIMA_BLUE}}>Amy</Text>}
-        extra={[]}
-        style={{height: 60, borderBottom: '1px solid rgba(200,200,200,0.5)'}}
-      />
-      <Space direction='vertical' style={{height: 440, marginLeft: '2%', width: '98%', overflowX: 'auto'}}>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{
-          user: {username: 'Amy', avatar: '/Amy.jpg'},
-          content: '哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈'
-        }}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
-        <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
-      </Space>
-      <div id="vditor" className="vditor" style={{border: '0px'}}/>
-    </div>
-  )
-}
+    return (
+      <div>
+        <PageHeader
+          avatar={{src: '/Amy.jpg'}}
+          ghost={true}
+          title={<Text style={{color: ZIMA_BLUE}}>Amy</Text>}
+          extra={[]}
+          style={{height: 60, borderBottom: '1px solid rgba(200,200,200,0.5)'}}
+        />
+        <div style={{
+          height: 440,
+          width: '100%',
+        }}>
+          <Space direction='vertical'
+                 style={{
+                   height: 440,
+                   marginLeft: '2%',
+                   width: '98%',
+                   overflowX: 'scroll',
+                   border: 'true',
+                   minHeight: 440,
+                   minWidth: '98%'
+                 }}>
+            {
+              data.map(datum => <Message key={datum.time} current={current} msg={datum}/>)
+            }
+          </Space>
+        </div>
+        <div id="vditor" className="vditor" style={{border: '0px'}}/>
+      </div>
+    )
+  }
 
 const AccountSettings: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const {currentUser} = initialState || {};
   const style = {fontSize: '20px', opacity: 0.5};
   const [active, setActive] = useState<string>('message');
+  const [messages, setMessages] = useState<API.MessageVO[]>([]);
 
   const data: any[] = [
     {avatar: '/qezhhnjy.jpg', title: 'qezhhnjy', desc: '这就是聊天描述内容!!!!!!!!!!!!!######!!!!!!!SAFAFSASFSFFSSF!!!'},
@@ -201,10 +187,25 @@ const AccountSettings: React.FC = () => {
     {avatar: currentUser?.user.avatar, title: 'zhaoyangfu', desc: 'This is the description'},
   ]
 
+  const ws = useRef<WebSocket | null>(null);
+
   const second = () => {
     if (active === 'message') return <MessageList data={data}/>
     return <Other/>
   }
+
+  useEffect(() => {
+    ws.current = wsInit(currentUser?.user || {});
+    ws.current.onmessage = (e) => {
+      const temp: API.MessageVO[] = [];
+      messages.push(JSON.parse(e.data));
+      messages.forEach(m => temp.push(m));
+      setMessages(temp);
+    }
+    return () => {
+      ws.current?.close();
+    }
+  }, [currentUser])
 
   return (
     <div style={{width: '70%', height: '700px', margin: "30px auto"}}>
@@ -227,7 +228,7 @@ const AccountSettings: React.FC = () => {
           {second()}
         </Col>
         <Col flex='auto' style={{backgroundColor: '#F0F0F0'}}>
-          <ChatWindow current={currentUser?.user || {}}/>
+          <ChatWindow current={currentUser?.user || {}} ws={ws} data={messages}/>
         </Col>
       </Row>
     </div>

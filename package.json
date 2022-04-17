@@ -84,6 +84,7 @@
     "slate": "^0.72.3",
     "slate-history": "^0.66.0",
     "slate-react": "^0.72.6",
+    "socket.io-client": "^4.4.1",
     "umi": "^3.5.20",
     "umi-serve": "^1.9.10",
     "vditor": "^3.8.13"

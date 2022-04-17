@@ -16,6 +16,11 @@ export default {
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
     },
+    '/ws': {
+      target: 'http://localhost:8081/',
+      changeOrigin: true,
+      pathRewrite: {'^/ws': ''},
+    },
     '/antq': {
       target: 'http://localhost:11000/',
       changeOrigin: true,
