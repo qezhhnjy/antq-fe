@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Avatar, Card, Col, Input, PageHeader, Row, Space, Tabs, Typography} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Avatar, Card, Col, Input, message, PageHeader, Row, Space, Tabs, Typography} from 'antd';
 import {useModel} from 'umi';
 import {
   CodeSandboxOutlined,
@@ -10,6 +10,8 @@ import {
 } from '@ant-design/icons';
 import {ZIMA_BLUE} from "@/utils/common";
 import './Settings.less';
+import "vditor/dist/index.css";
+import Vditor from "vditor";
 
 const {Meta} = Card;
 const {Search} = Input;
@@ -101,6 +103,39 @@ const Message: React.FC<{ current: API.User, message: API.MessageVO }> = (props)
 
 const ChatWindow: React.FC<{ current: API.User }> = (props) => {
   const {current} = props;
+  const [vd, setVd] = useState<Vditor>();
+
+  useEffect(() => {
+    const vditor = new Vditor("vditor", {
+      ctrlEnter: (value) => {
+        // TODO 不知道怎么自定义快捷键实现换行
+      },
+      toolbar: ['emoji', {
+        hotkey: 'Enter',
+        name: 'send',
+        tip: '发送',
+        tipPosition: 'n',
+        className: 'right',
+        icon: '<img width=16 style="float: right" src="/send.svg"/>',
+        click() {
+          alert('捐赠地址：https://ld246.com/sponsor')
+        }
+      }],
+      mode: 'ir',
+      width: 'auto',
+      counter: {enable: true, type: 'markdown'},
+      height: 200,
+      preview: {
+        theme: {current: 'light'},
+        hljs: {lineNumber: true, style: 'dracula'},
+        // maxWidth: 200
+      },
+      after: () => {
+        vditor.setValue('');
+        setVd(vditor);
+      }
+    });
+  }, []);
 
   return (
     <div>
@@ -149,7 +184,7 @@ const ChatWindow: React.FC<{ current: API.User }> = (props) => {
         <Message current={current} message={{user: {username: 'Amy', avatar: '/Amy.jpg'}, content: '哈哈哈哈'}}/>
         <Message current={current} message={{user: current, content: '哈哈哈哈'}}/>
       </Space>
-      <div style={{height: 200, borderTop: '1px solid rgba(200,200,200,0.5)'}}>发送</div>
+      <div id="vditor" className="vditor" style={{border: '0px'}}/>
     </div>
   )
 }
