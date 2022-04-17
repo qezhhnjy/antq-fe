@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, Card, Col, Input, Row, Space, Tabs} from 'antd';
+import {Avatar, Card, Col, Input, Row, Space, Tabs, Typography} from 'antd';
 import {useModel} from 'umi';
 import {
   CodeSandboxOutlined,
@@ -8,34 +8,39 @@ import {
   MessageOutlined,
   UserSwitchOutlined
 } from '@ant-design/icons';
+import {ZIMA_BLUE} from "@/utils/common";
 
 const {Meta} = Card;
 const {Search} = Input;
 const {TabPane} = Tabs;
+const {Title, Paragraph, Text, Link} = Typography;
+const []: string = ['lightgray', 'lightgray', 'lightgray', 'lightgray', 'lightgray'];
 
 const AccountSettings: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const {currentUser} = initialState || {};
-  const style = {fontSize: '20px', margin: '6px 20px', color: 'lightgray', opacity: 0.7};
+  const style = {fontSize: '20px', opacity: 0.5};
 
   const data: any[] = [
-    {avatar: '/qezhhnjy.jpg', title: 'qezhhnjy', desc: '这就是聊天描述内容!!!!!!!!!!!!!######!!!!!!!!!!'},
+    {avatar: '/qezhhnjy.jpg', title: 'qezhhnjy', desc: '这就是聊天描述内容!!!!!!!!!!!!!######!!!!!!!SAFAFSASFSFFSSF!!!'},
     {avatar: '/Amy.jpg', title: 'Amy', desc: 'This is the description'},
     {avatar: currentUser?.user.avatar, title: 'zhaoyangfu', desc: 'This is the description'},
   ]
 
   return (
-    <div style={{width: '60%', height: '700px', margin: "30px auto"}}>
+    <div style={{width: '70%', height: '700px', margin: "30px auto"}}>
       <Row style={{height: '100%'}}>
-        <Col flex="60px" style={{backgroundColor: '#333'}}>
+        <Col flex="60px" style={{backgroundColor: '#EEE'}}>
           <Space direction='vertical'>
             <Avatar size='large' icon={<img alt="" src={currentUser?.user?.avatar}/>}
                     style={{margin: '40px 10px 5px 10px'}}/>
-            <MessageOutlined style={style}/>
-            <UserSwitchOutlined style={style}/>
-            <CodeSandboxOutlined style={style}/>
-            <FolderOutlined style={style}/>
-            <GlobalOutlined style={style}/>
+            <Tabs style={{width: '60px'}} tabPosition='left' type='line' defaultActiveKey='message' tabBarGutter={5}>
+              <TabPane tab={<MessageOutlined style={style}/>} key='message'/>
+              <TabPane tab={<UserSwitchOutlined style={style}/>} key='user'/>
+              <TabPane tab={<CodeSandboxOutlined style={style}/>} key='collect'/>
+              <TabPane tab={<FolderOutlined style={style}/>} key='doc'/>
+              <TabPane tab={<GlobalOutlined style={style}/>} key='global'/>
+            </Tabs>
           </Space>
         </Col>
         <Col flex="240px" style={{backgroundColor: '#EEE', borderRight: '1px solid lightgray'}}>
@@ -47,8 +52,17 @@ const AccountSettings: React.FC = () => {
               {
                 data.map(d => <TabPane tab={
                   <Meta style={{width: '240px'}} avatar={<Avatar size='large' src={d.avatar}/>}
-                        title={d.title}
-                        description={d.desc}
+                        title={
+                          <Row>
+                            <Col span={17} style={{textAlign: 'left'}}>
+                              <Text style={{color: ZIMA_BLUE}}>{d.title}</Text>
+                            </Col>
+                            <Col span={3} style={{textAlign: 'right'}}>
+                              <Text style={{fontSize: '8px'}} type="secondary">11:20</Text>
+                            </Col>
+                          </Row>
+                        }
+                        description={<div style={{textAlign: 'left'}}><Text type="secondary">{d.desc}</Text></div>}
                   />
                 } key={d.title}/>)
               }
