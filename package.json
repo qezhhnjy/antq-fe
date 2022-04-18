@@ -70,6 +70,7 @@
     "moment": "^2.25.3",
     "omit.js": "^2.0.2",
     "prismjs": "^1.26.0",
+    "pubsub-js": "^1.9.4",
     "quill-emoji": "^0.2.0",
     "rc-menu": "^9.0.13",
     "rc-util": "^5.14.0",

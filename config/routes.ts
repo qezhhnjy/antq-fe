@@ -104,18 +104,6 @@
         component: './util/Quill',
       },
       {
-        path: '/util/brilliant',
-        name: 'Markdown-brilliant',
-        access: 'util-Brilliant',
-        component: './util/Brilliant',
-      },
-      {
-        path: '/util/react-markdown',
-        name: 'React-Markdown',
-        access: 'util-react-markdown',
-        component: './util/React-Markdown',
-      },
-      {
         path: '/util/vditor',
         name: 'Vditor',
         component: './util/Vditor',

@@ -117,6 +117,14 @@ export async function queryBlog(query?: API.Query, options?: { [key: string]: an
   });
 }
 
+export async function listUser(query?: API.Query, options?: { [key: string]: any }) {
+  return request<API.BaseResult<API.UserVO[]>>('/antq/oauth/user/list', {
+    method: 'POST',
+    data: {...query},
+    ...(options || {}),
+  });
+}
+
 export async function listMenu(query?: API.Query, options?: { [key: string]: any }) {
   return request<API.BaseResult<API.MenuVO[]>>('/antq/oauth/menu/list', {
     method: 'POST',

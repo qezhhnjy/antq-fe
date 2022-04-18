@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Avatar, Card, Col, Input, PageHeader, Row, Space, Tabs, Typography} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Avatar, Col, Input, PageHeader, Row, Space, Tabs, Typography} from 'antd';
 import {useModel} from 'umi';
 import {
   CodeSandboxOutlined,
@@ -13,60 +13,64 @@ import './Settings.less';
 import "vditor/dist/index.css";
 import Vditor from "vditor";
 import {now} from '@/utils/timeUtil';
+import {listUser} from "@/services/ant-design-pro/antq-api";
+import ProList from '@ant-design/pro-list';
+import useWebsocket from "@/utils/websocket";
 
-const {Meta} = Card;
 const {Search} = Input;
 const {TabPane} = Tabs;
 const {Paragraph, Text,} = Typography;
-const wsInit = (user: API.User) => new WebSocket(`ws://120.26.168.94:11009?username=${user.username}`);
 
-const MessageList: React.FC<{ data: any }> = (props) => {
-  const {data} = props;
+const FriendList: React.FC<{ data: API.User[], setChat: Function, setMessages: Function }> = (props) => {
+  const {data, setChat, setMessages} = props;
   return (
     <div>
-      <div style={{height: 60, backgroundColor: '#EEE'}}>
-        <Search style={{margin: '20px', width: 200}} placeholder='搜索'/>
+      <div style={{height: 80, backgroundColor: '#EEE'}}>
+        <Search style={{margin: '30px', width: 240}} placeholder='搜索'/>
       </div>
-      <Tabs style={{width: '240px'}} tabPosition='left' type="card" tabBarGutter={0}>
-        {
-          data.map((d: any) => <TabPane tab={
-            <Meta style={{width: '240px'}} avatar={<Avatar size='large' src={d.avatar}/>}
-                  title={
-                    <Row>
-                      <Col span={17} style={{textAlign: 'left'}}>
-                        <Text style={{color: ZIMA_BLUE}}>{d.title}</Text>
-                      </Col>
-                      <Col span={3} style={{textAlign: 'right'}}>
-                        <Text style={{fontSize: '8px'}} type="secondary">11:20</Text>
-                      </Col>
-                    </Row>
-                  }
-                  description={<div style={{textAlign: 'left'}}><Text type="secondary">{d.desc}</Text></div>}
-            />
-          } key={d.title}/>)
-        }
-      </Tabs>
+      <div style={{height: 640, width: 300, overflowY: 'auto', overflowX: 'hidden'}}>
+        <ProList<API.User>
+          rowKey='id'
+          metas={{
+            title: {render: (dom, user) => <span style={{color: ZIMA_BLUE, fontSize: 15}}>{user.username}</span>},
+            avatar: {render: (dom, user) => <Avatar size='large' src={user.avatar}/>},
+            // extra: {dataIndex: 'phone'},
+            description: {dataIndex: 'email'}
+          }}
+          style={{marginLeft: -20, marginRight: -20}}
+          split
+          onRow={(record) => {
+            return {
+              onClick: () => {
+                setChat(record);
+                setMessages([]);
+              },
+            };
+          }}
+          dataSource={data}
+        />
+      </div>
     </div>
   );
 }
 
 const Other: React.FC = () => {
   return (
-    <div style={{height: 60, backgroundColor: '#EEE'}}>
-      <Search style={{margin: '20px', width: 200}} placeholder='搜索'/>
+    <div style={{height: 80, backgroundColor: '#EEE'}}>
+      <Search style={{margin: '30px', width: 240}} placeholder='搜索'/>
     </div>
   )
 }
 
-const Message: React.FC<{ current: API.User, msg: API.MessageVO }> = (props) => {
-  const {current, msg} = props;
-  const {user, content} = msg;
-  const float = current.username === user.username ? 'right' : 'left';
+const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User }> = (props) => {
+  const {current, msg, chat} = props;
+  const {from, content} = msg;
+  const float = current.username === from ? 'right' : 'left';
 
   if (float === 'left') {
     return (
       <Space style={{float: float, marginTop: 5, marginBottom: 5}}>
-        <Avatar src={user.avatar}/>
+        <Avatar src={chat.avatar}/>
         <div style={{
           backgroundColor: '#FFF',
           borderRadius: 5,
@@ -97,17 +101,18 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO }> = (props) => 
             padding: '0 10px',
           }}>{content}</Paragraph>
         </div>
-        <Avatar src={user.avatar}/>
+        <Avatar src={current.avatar}/>
       </Space>
     );
   }
 }
 
-const ChatWindow: React.FC<{ current: API.User, ws: any, data: API.MessageVO[] }> =
+const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, data: API.MessageVO[], chat: API.User | undefined }> =
   (props) => {
-    const {current, ws, data} = props;
+    const {current, connector, data, chat} = props;
 
     useEffect(() => {
+      if (!chat) return;
       const vditor = new Vditor("vditor", {
         ctrlEnter: () => {
           // TODO 不知道怎么自定义快捷键实现换行
@@ -121,8 +126,12 @@ const ChatWindow: React.FC<{ current: API.User, ws: any, data: API.MessageVO[] }
           icon: '<img width=16 style="float: right" src="/send.svg"/>',
           click: () => {
             if (vditor.getValue().trim() === '') return;
-            if (!ws.current) ws.current = wsInit(current)
-            ws.current.send(JSON.stringify({user: current, content: vditor.getValue(), time: now()}));
+            connector?.send(JSON.stringify({
+              from: current.username,
+              to: chat.username,
+              content: vditor.getValue(),
+              createTime: now()
+            }));
             vditor.setValue('');
           }
         }],
@@ -139,16 +148,18 @@ const ChatWindow: React.FC<{ current: API.User, ws: any, data: API.MessageVO[] }
           vditor.setValue('');
         }
       });
-    }, []);
+    }, [chat]);
+
+    if (!chat) return <div/>;
 
     return (
       <div>
         <PageHeader
-          avatar={{src: '/Amy.jpg'}}
+          avatar={{src: chat.avatar, size: 'large'}}
           ghost={true}
-          title={<Text style={{color: ZIMA_BLUE}}>Amy</Text>}
+          title={<Text style={{color: ZIMA_BLUE}}>{chat.username}</Text>}
           extra={[]}
-          style={{height: 60, borderBottom: '1px solid rgba(200,200,200,0.5)'}}
+          style={{height: 80, borderBottom: '1px solid rgba(200,200,200,0.5)'}}
         />
         <div style={{
           height: 440,
@@ -165,7 +176,7 @@ const ChatWindow: React.FC<{ current: API.User, ws: any, data: API.MessageVO[] }
                    minWidth: '98%'
                  }}>
             {
-              data.map(datum => <Message key={datum.time} current={current} msg={datum}/>)
+              data.map(datum => <Message key={datum.id} current={current} msg={datum} chat={chat}/>)
             }
           </Space>
         </div>
@@ -178,34 +189,28 @@ const AccountSettings: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const {currentUser} = initialState || {};
   const style = {fontSize: '20px', opacity: 0.5};
+  const {connector, msg, closeWebSocket} = useWebsocket(`ws://120.26.168.94:11009/${currentUser?.user.username}`);
+
   const [active, setActive] = useState<string>('message');
-  const [messages, setMessages] = useState<API.MessageVO[]>([]);
-
-  const data: any[] = [
-    {avatar: '/qezhhnjy.jpg', title: 'qezhhnjy', desc: '这就是聊天描述内容!!!!!!!!!!!!!######!!!!!!!SAFAFSASFSFFSSF!!!'},
-    {avatar: '/Amy.jpg', title: 'Amy', desc: 'This is the description'},
-    {avatar: currentUser?.user.avatar, title: 'zhaoyangfu', desc: 'This is the description'},
-  ]
-
-  const ws = useRef<WebSocket | null>(null);
+  const [msgList, setMsgList] = useState<API.MessageVO[]>([]);
+  const [friends, setFriends] = useState<API.User[]>([]);
+  // 当前聊天的对象
+  const [chat, setChat] = useState<API.User>();
 
   const second = () => {
-    if (active === 'message') return <MessageList data={data}/>
+    if (active === 'message') return <FriendList data={friends} setChat={setChat} setMessages={setMsgList}/>
     return <Other/>
   }
 
   useEffect(() => {
-    ws.current = wsInit(currentUser?.user || {});
-    ws.current.onmessage = (e) => {
-      const temp: API.MessageVO[] = [];
-      messages.push(JSON.parse(e.data));
-      messages.forEach(m => temp.push(m));
-      setMessages(temp);
-    }
-    return () => {
-      ws.current?.close();
-    }
-  }, [currentUser])
+    if (msg) setMsgList([...msgList, msg])
+  }, [msg]);
+
+  useEffect(() => {
+    listUser().then(result => {
+      setFriends(result.data?.map(vo => vo.user) || []);
+    });
+  }, [currentUser]);
 
   return (
     <div style={{width: '70%', height: '700px', margin: "30px auto"}}>
@@ -228,7 +233,7 @@ const AccountSettings: React.FC = () => {
           {second()}
         </Col>
         <Col flex='auto' style={{backgroundColor: '#F0F0F0'}}>
-          <ChatWindow current={currentUser?.user || {}} ws={ws} data={messages}/>
+          <ChatWindow current={currentUser?.user || {}} connector={connector.current} data={msgList} chat={chat}/>
         </Col>
       </Row>
     </div>

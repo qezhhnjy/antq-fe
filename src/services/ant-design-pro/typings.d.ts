@@ -220,9 +220,11 @@ declare namespace API {
   };
 
   type MessageVO = {
-    user: User;
+    id:string;
+    from: string;
+    to:string;
     content:string;
-    time?: string;
+    createTime: string;
   }
 
   type FinanceOptional = {
