@@ -67,6 +67,14 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
   const {from, content} = msg;
   const float = current.username === from ? 'right' : 'left';
 
+  const html = async () => {
+    return await Vditor.md2html(content, {
+      mode: 'light',
+      hljs: {lineNumber: true, style: 'dracula'},
+      theme: {current: 'light'},
+    })
+  }
+
   if (float === 'left') {
     return (
       <Space style={{float: float, marginTop: 5, marginBottom: 5}}>
@@ -82,11 +90,7 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
             verticalAlign: 'middle',
             padding: '0 10px',
             maxWidth: 300,
-          }}>{Vditor.md2html(content, {
-            mode: 'light',
-            hljs: {lineNumber: true, style: 'dracula'},
-            theme: {current: 'light'},
-          })}</Paragraph>
+          }}>{html()}</Paragraph>
         </div>
       </Space>
     );
@@ -103,11 +107,7 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
             display: 'table-cell',
             verticalAlign: 'middle',
             padding: '0 10px',
-          }}>{Vditor.md2html(content, {
-            mode: 'light',
-            hljs: {lineNumber: true, style: 'dracula'},
-            theme: {current: 'light'},
-          })}</Paragraph>
+          }}>{html()}</Paragraph>
         </div>
         <Avatar src={current.avatar}/>
       </Space>
@@ -244,11 +244,6 @@ const AccountSettings: React.FC = () => {
           <ChatWindow current={currentUser?.user || {}} connector={connector.current} data={msgList} chat={chat}/>
         </Col>
       </Row>
-      {Vditor.md2html('# 标题1', {
-        mode: 'light',
-        hljs: {lineNumber: true, style: 'dracula'},
-        theme: {current: 'light'},
-      })}
     </div>
   );
 };
