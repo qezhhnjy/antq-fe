@@ -99,6 +99,7 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
   } else {
     return (
       <Space style={{float: float, marginRight: 15, marginTop: 5, marginBottom: 5}}>
+        <div id={id}/>
         <div style={{
           backgroundColor: 'rgba(22, 184, 243, 0.8)',
           borderRadius: 5,
@@ -111,7 +112,6 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
             padding: '0 10px',
             maxWidth: 350,
           }}>
-            <div id={id}/>
           </Paragraph>
         </div>
         <Avatar src={current.avatar}/>
@@ -217,6 +217,8 @@ const AccountSettings: React.FC = () => {
   // 当前聊天的对象
   const [chat, setChat] = useState<API.User>();
 
+  const user = currentUser?.user || {};
+
   const second = () => {
     if (active === 'message') return <FriendList chat={chat} data={friends} setChat={setChat} setMessages={setMsgList}/>
     return <Other/>
@@ -251,8 +253,8 @@ const AccountSettings: React.FC = () => {
           {second()}
         </Col>
         <Col span={16} style={{backgroundColor: '#F0F0F0'}}>
-          <ChatWindow current={currentUser?.user || {}} connector={connector.current} data={msgList
-            .filter(datum => currentUser?.user.username === datum.from || currentUser?.user.username === datum.to)
+          <ChatWindow current={user} connector={connector.current} data={msgList
+            .filter(datum => (datum.from === user.username && datum.to === chat?.username) || (datum.to === user.username && datum.from === chat?.username))
           } chat={chat}/>
         </Col>
       </Row>
