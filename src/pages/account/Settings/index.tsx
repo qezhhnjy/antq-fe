@@ -219,7 +219,8 @@ const AccountSettings: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const {currentUser} = initialState || {};
   const style = {fontSize: '20px', opacity: 0.5};
-  const {connector, msg} = useWebsocket(`ws://localhost:11009/${currentUser?.user.username}`);
+  // const {connector, msg} = useWebsocket(`ws://localhost:11009/${currentUser?.user.username}`);
+  const {connector, msg} = useWebsocket(`ws://120.26.168.94:11009/${currentUser?.user.username}`);
 
   const [active, setActive] = useState<string>('message');
   const [msgList, setMsgList] = useState<IM.MessageVO[]>([]);
