@@ -21,8 +21,8 @@ const {Search} = Input;
 const {TabPane} = Tabs;
 const {Paragraph, Text,} = Typography;
 
-const FriendList: React.FC<{ data: API.User[], setChat: Function, setMessages: Function }> = (props) => {
-  const {data, setChat, setMessages} = props;
+const FriendList: React.FC<{ data: API.User[], chat: API.User | undefined, setChat: Function, setMessages: Function }> = (props) => {
+  const {data, chat, setChat} = props;
   return (
     <div>
       <div style={{height: 80, backgroundColor: '#EEE'}}>
@@ -42,8 +42,8 @@ const FriendList: React.FC<{ data: API.User[], setChat: Function, setMessages: F
           onRow={(record) => {
             return {
               onClick: () => {
-                setChat(record);
-                setMessages([]);
+                if (chat?.username !== record.username) setChat(record);
+                // setMessages([]);
               },
             };
           }}
@@ -218,7 +218,7 @@ const AccountSettings: React.FC = () => {
   const [chat, setChat] = useState<API.User>();
 
   const second = () => {
-    if (active === 'message') return <FriendList data={friends} setChat={setChat} setMessages={setMsgList}/>
+    if (active === 'message') return <FriendList chat={chat} data={friends} setChat={setChat} setMessages={setMsgList}/>
     return <Other/>
   }
 
