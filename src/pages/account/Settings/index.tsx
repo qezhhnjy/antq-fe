@@ -244,6 +244,11 @@ const AccountSettings: React.FC = () => {
           <ChatWindow current={currentUser?.user || {}} connector={connector.current} data={msgList} chat={chat}/>
         </Col>
       </Row>
+      {Vditor.md2html('# 标题1', {
+        mode: 'light',
+        hljs: {lineNumber: true, style: 'dracula'},
+        theme: {current: 'light'},
+      })}
     </div>
   );
 };
