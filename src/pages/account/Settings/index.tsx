@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Avatar, Col, Input, PageHeader, Row, Space, Tabs, Typography} from 'antd';
-import {useModel} from 'umi';
 import {
   CodeSandboxOutlined,
   FolderOutlined,
@@ -16,6 +15,7 @@ import {now} from '@/utils/timeUtil';
 import {listUser} from "@/services/ant-design-pro/antq-api";
 import ProList from '@ant-design/pro-list';
 import useWebsocket from "@/utils/websocket";
+import {useModel} from "@@/plugin-model/useModel";
 
 const {Search} = Input;
 const {TabPane} = Tabs;
@@ -64,17 +64,16 @@ const Other: React.FC = () => {
 
 const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User }> = (props) => {
   const {current, msg, chat} = props;
-  const {from, content} = msg;
+  const {id, from, content} = msg;
   const float = current.username === from ? 'right' : 'left';
 
-  const html = async () => {
-    return await Vditor.md2html(content, {
+  useEffect(() => {
+    Vditor.preview(document.getElementById(id) as HTMLDivElement, content, {
       mode: 'light',
       hljs: {lineNumber: true, style: 'dracula'},
       theme: {current: 'light'},
-    })
-  }
-  console.log('content=>', content, html());
+    });
+  });
 
   if (float === 'left') {
     return (
@@ -90,8 +89,10 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
             display: 'table-cell',
             verticalAlign: 'middle',
             padding: '0 10px',
-            maxWidth: 300,
-          }}>{html()}</Paragraph>
+            maxWidth: 350,
+          }}>
+            <div id={id}/>
+          </Paragraph>
         </div>
       </Space>
     );
@@ -108,7 +109,10 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
             display: 'table-cell',
             verticalAlign: 'middle',
             padding: '0 10px',
-          }}>{html()}</Paragraph>
+            maxWidth: 350,
+          }}>
+            <div id={id}/>
+          </Paragraph>
         </div>
         <Avatar src={current.avatar}/>
       </Space>
@@ -145,7 +149,7 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
           }
         }],
         mode: 'ir',
-        width: 'auto',
+        width: '100%',
         counter: {enable: true, type: 'markdown'},
         height: 200,
         preview: {
@@ -162,7 +166,7 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
     if (!chat) return <div/>;
 
     return (
-      <div>
+      <div style={{width: '100%'}}>
         <PageHeader
           avatar={{src: chat.avatar, size: 'large'}}
           ghost={true}
@@ -189,7 +193,7 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
             }
           </Space>
         </div>
-        <div id="vditor" className="vditor" style={{border: '0px'}}/>
+        <div id="vditor" className="vditor" style={{border: '0px', width: '100%'}}/>
       </div>
     )
   }
@@ -198,7 +202,7 @@ const AccountSettings: React.FC = () => {
   const {initialState} = useModel('@@initialState');
   const {currentUser} = initialState || {};
   const style = {fontSize: '20px', opacity: 0.5};
-  const {connector, msg, closeWebSocket} = useWebsocket(`ws://120.26.168.94:11009/${currentUser?.user.username}`);
+  const {connector, msg} = useWebsocket(`ws://localhost:11009/${currentUser?.user.username}`);
 
   const [active, setActive] = useState<string>('message');
   const [msgList, setMsgList] = useState<API.MessageVO[]>([]);
@@ -216,15 +220,13 @@ const AccountSettings: React.FC = () => {
   }, [msg]);
 
   useEffect(() => {
-    listUser().then(result => {
-      setFriends(result.data?.map(vo => vo.user) || []);
-    });
+    listUser().then(result => setFriends(result.data?.map(vo => vo.user) || []));
   }, [currentUser]);
 
   return (
     <div style={{width: '70%', height: '700px', margin: "30px auto"}}>
       <Row style={{height: '100%'}}>
-        <Col flex="60px" style={{backgroundColor: '#EEE'}}>
+        <Col span={1.5} style={{backgroundColor: '#EEE'}}>
           <Space direction='vertical'>
             <Avatar size='large' icon={<img alt="" src={currentUser?.user?.avatar}/>}
                     style={{margin: '40px 10px 5px 10px'}}/>
@@ -238,10 +240,10 @@ const AccountSettings: React.FC = () => {
             </Tabs>
           </Space>
         </Col>
-        <Col flex="240px" style={{backgroundColor: '#EEE', borderRight: '1px solid lightgray'}}>
+        <Col span={6} style={{backgroundColor: '#EEE', borderRight: '1px solid lightgray'}}>
           {second()}
         </Col>
-        <Col flex='auto' style={{backgroundColor: '#F0F0F0'}}>
+        <Col span={16} style={{backgroundColor: '#F0F0F0'}}>
           <ChatWindow current={currentUser?.user || {}} connector={connector.current} data={msgList} chat={chat}/>
         </Col>
       </Row>
