@@ -74,6 +74,7 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
       theme: {current: 'light'},
     })
   }
+  console.log('content=>', content, html());
 
   if (float === 'left') {
     return (
