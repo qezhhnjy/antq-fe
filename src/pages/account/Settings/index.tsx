@@ -82,7 +82,11 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
             verticalAlign: 'middle',
             padding: '0 10px',
             maxWidth: 300,
-          }}>{content}</Paragraph>
+          }}>{Vditor.md2html(content, {
+            mode: 'light',
+            hljs: {lineNumber: true, style: 'dracula'},
+            theme: {current: 'light'},
+          })}</Paragraph>
         </div>
       </Space>
     );
@@ -99,7 +103,11 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
             display: 'table-cell',
             verticalAlign: 'middle',
             padding: '0 10px',
-          }}>{content}</Paragraph>
+          }}>{Vditor.md2html(content, {
+            mode: 'light',
+            hljs: {lineNumber: true, style: 'dracula'},
+            theme: {current: 'light'},
+          })}</Paragraph>
         </div>
         <Avatar src={current.avatar}/>
       </Space>
