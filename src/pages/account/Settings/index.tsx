@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Avatar, Col, Input, PageHeader, Row, Space, Tabs, Typography} from 'antd';
 import {
   CodeSandboxOutlined,
@@ -122,6 +122,8 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
 
 const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, data: API.MessageVO[], chat: API.User | undefined }> =
   (props) => {
+    const end = useRef<HTMLDivElement>(null);
+
     const {current, connector, data, chat} = props;
 
     useEffect(() => {
@@ -163,6 +165,10 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
       });
     }, [chat]);
 
+    useEffect(() => {
+      if (end?.current) end.current.scrollIntoView({behavior: 'smooth'});
+    },);
+
     if (!chat) return <div/>;
 
     return (
@@ -183,14 +189,15 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
                    height: 440,
                    marginLeft: '2%',
                    width: '98%',
-                   overflowX: 'scroll',
                    border: 'true',
                    minHeight: 440,
-                   minWidth: '98%'
+                   minWidth: '98%',
+                   overflowX: 'auto',
                  }}>
             {
               data.map(datum => <Message key={datum.id} current={current} msg={datum} chat={chat}/>)
             }
+            <div style={{height: 1}} ref={end}/>
           </Space>
         </div>
         <div id="vditor" className="vditor" style={{border: '0px', width: '100%'}}/>
