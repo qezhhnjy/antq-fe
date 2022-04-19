@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { StatisticCard } from '@ant-design/pro-card';
-import { StarOutlined, SyncOutlined } from '@ant-design/icons';
-import { Col, message, Space } from 'antd';
-import { minData, stockDetail } from '@/services/snowball/snowball-api';
+import React, {useEffect, useRef, useState} from 'react';
+import {StatisticCard} from '@ant-design/pro-card';
+import {StarOutlined, SyncOutlined} from '@ant-design/icons';
+import {Col, message, Space} from 'antd';
+import {minData, stockDetail} from '@/services/snowball/snowball-api';
 import EChartsReact from 'echarts-for-react';
 import * as echarts from 'echarts/core';
 import {
@@ -15,14 +15,14 @@ import {
   VisualMapComponent,
   VisualMapComponentOption,
 } from 'echarts/components';
-import { BarSeriesOption, LineChart, LineSeriesOption } from 'echarts/charts';
-import { CanvasRenderer } from 'echarts/renderers';
-import { UniversalTransition } from 'echarts/features';
-import { timeByTs } from '@/utils/timeUtil';
-import { downColor, normalColor, upColor } from '@/components/KLine';
-import { ZIMA_BLUE } from '@/utils/common';
-import { deleteOptional } from '@/services/ant-design-pro/antq-api';
-import { pushToInfo, STOCK_INFO_PATH } from '@/utils/pushUtil';
+import {BarSeriesOption, LineChart, LineSeriesOption} from 'echarts/charts';
+import {CanvasRenderer} from 'echarts/renderers';
+import {UniversalTransition} from 'echarts/features';
+import {timeByTs} from '@/utils/timeUtil';
+import {downColor, normalColor, upColor} from '@/components/KLine';
+import {ZIMA_BLUE} from '@/utils/common';
+import {deleteOptional} from '@/services/ant-design-pro/antq-api';
+import {pushToInfo, STOCK_INFO_PATH} from '@/utils/pushUtil';
 
 echarts.use([
   TitleComponent,
@@ -34,16 +34,14 @@ echarts.use([
   UniversalTransition,
 ]);
 
-type EChartsOption = echarts.ComposeOption<
-  | TitleComponentOption
+type EChartsOption = echarts.ComposeOption<| TitleComponentOption
   | TooltipComponentOption
   | GridComponentOption
   | VisualMapComponentOption
   | LineSeriesOption
-  | BarSeriesOption
->;
+  | BarSeriesOption>;
 
-const { Statistic } = StatisticCard;
+const {Statistic} = StatisticCard;
 
 export type FinanceCardProps = {
   symbol: string;
@@ -52,7 +50,7 @@ export type FinanceCardProps = {
   cancelOptional?: boolean;
 };
 const FinanceCard: React.FC<FinanceCardProps> = (props) => {
-  const { symbol, colspan = 6, active = true, cancelOptional = true } = props;
+  const {symbol, colspan = 6, active = true, cancelOptional = true} = props;
 
   const [detail, setDetail] = useState<Snowball.StockDetail>();
   const [data, setData] = useState<{ items: Snowball.MinItem[] }>();
@@ -127,9 +125,9 @@ const FinanceCard: React.FC<FinanceCardProps> = (props) => {
       {
         type: 'category',
         data: dateList,
-        axisTick: { show: false },
-        axisLabel: { show: true, color: ZIMA_BLUE },
-        axisLine: { show: true, lineStyle: { color: ZIMA_BLUE } },
+        axisTick: {show: false},
+        axisLabel: {show: true, color: ZIMA_BLUE},
+        axisLine: {show: true, lineStyle: {color: ZIMA_BLUE}},
         max: (value) => Math.max(value.max, 240),
       },
     ],
@@ -137,11 +135,11 @@ const FinanceCard: React.FC<FinanceCardProps> = (props) => {
       {
         type: 'value',
         scale: true,
-        splitArea: { show: false },
-        splitLine: { show: false },
-        axisLabel: { show: false },
-        axisLine: { show: false },
-        axisTick: { show: false },
+        splitArea: {show: false},
+        splitLine: {show: false},
+        axisLabel: {show: false},
+        axisLine: {show: false},
+        axisTick: {show: false},
       },
     ],
     series: [
@@ -159,7 +157,7 @@ const FinanceCard: React.FC<FinanceCardProps> = (props) => {
         markLine: {
           silent: true,
           symbol: 'none',
-          label: { show: false },
+          label: {show: false},
           data: [
             {
               symbolSize: 0,
@@ -178,7 +176,7 @@ const FinanceCard: React.FC<FinanceCardProps> = (props) => {
   };
 
   return (
-    <Col xs={12} xl={colspan} style={{ marginBottom: 10 }}>
+    <Col xs={12} xl={colspan} style={{marginBottom: 10}}>
       <StatisticCard
         loading={loading}
         hoverable
@@ -192,15 +190,15 @@ const FinanceCard: React.FC<FinanceCardProps> = (props) => {
               whiteSpace: 'nowrap',
               width: '150px',
             }}
-            onClick={() => pushToInfo(STOCK_INFO_PATH, { symbol, name })}
+            onClick={() => pushToInfo(STOCK_INFO_PATH, {symbol, name})}
           >
             {name}
           </b>
         }
         subTitle={
           <span
-            style={{ color: ZIMA_BLUE }}
-            onClick={() => pushToInfo(STOCK_INFO_PATH, { symbol, name })}
+            style={{color: ZIMA_BLUE}}
+            onClick={() => pushToInfo(STOCK_INFO_PATH, {symbol, name})}
           >
             {symbol}
           </span>
@@ -208,14 +206,14 @@ const FinanceCard: React.FC<FinanceCardProps> = (props) => {
         gutter={[0, 20]}
         extra={
           <Space>
-            {refresh ? <SyncOutlined style={{ margin: 10, color: ZIMA_BLUE }} spin /> : null}
+            {refresh ? <SyncOutlined style={{margin: 10, color: ZIMA_BLUE}} spin/> : null}
             {cancelOptional ? (
               <StarOutlined
                 onClick={() => {
                   deleteOptional(symbol).then(() => message.success('取消关注'));
                   // .then(() => )
                 }}
-                style={{ color: ZIMA_BLUE, fontSize: 14 }}
+                style={{color: ZIMA_BLUE, fontSize: 14}}
               />
             ) : null}
           </Space>
@@ -223,18 +221,18 @@ const FinanceCard: React.FC<FinanceCardProps> = (props) => {
         statistic={{
           status: chg > 0 ? 'error' : chg < 0 ? 'success' : 'default',
           value: current,
-          valueStyle: { color: color },
+          valueStyle: {color: color},
           prefix: prefix,
           description: (
-            <Space onClick={() => pushToInfo(STOCK_INFO_PATH, { symbol, name })}>
-              <Statistic value={chg} trend={trend} />
-              <Statistic value={percent?.toFixed(2) + '%'} trend={trend} />
-              <Statistic value={(amount / 1000_000_000).toFixed(2) + 'B'} />
-              <Statistic value={(market_capital / 1000_000_000).toFixed(2) + 'B'} />
+            <Space onClick={() => pushToInfo(STOCK_INFO_PATH, {symbol, name})}>
+              <Statistic value={chg} trend={trend}/>
+              <Statistic value={percent?.toFixed(2) + '%'} trend={trend}/>
+              <Statistic value={(amount / 1000_000_000).toFixed(2) + 'B'}/>
+              <Statistic value={(market_capital / 1000_000_000).toFixed(2) + 'B'}/>
             </Space>
           ),
         }}
-        chart={<EChartsReact style={{ height: 100, width: '100%' }} option={option} />}
+        chart={<EChartsReact style={{height: 100, width: '100%'}} option={option}/>}
       />
     </Col>
   );

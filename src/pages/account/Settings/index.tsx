@@ -11,15 +11,15 @@ import {ZIMA_BLUE} from "@/utils/common";
 import './Settings.less';
 import "vditor/dist/index.css";
 import Vditor from "vditor";
-import {now} from '@/utils/timeUtil';
 import {listUser} from "@/services/ant-design-pro/antq-api";
 import ProList from '@ant-design/pro-list';
 import useWebsocket from "@/utils/websocket";
 import {useModel} from "@@/plugin-model/useModel";
+import {now} from '@/utils/timeUtil';
 
 const {Search} = Input;
 const {TabPane} = Tabs;
-const {Paragraph, Text,} = Typography;
+const {Paragraph, Text} = Typography;
 
 const FriendList: React.FC<{ data: API.User[], chat: API.User | undefined, setChat: Function, setMessages: Function }> = (props) => {
   const {data, chat, setChat} = props;
@@ -72,10 +72,10 @@ const Other: React.FC = () => {
   )
 }
 
-const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User }> = (props) => {
+const Message: React.FC<{ current: API.User, msg: IM.MessageVO, chat: API.User }> = (props) => {
   const {current, msg, chat} = props;
-  const {id, from, content} = msg;
-  const float = current.username === from ? 'right' : 'left';
+  const {id, send, content} = msg;
+  const float = current.username === send ? 'right' : 'left';
 
   useEffect(() => {
     Vditor.preview(document.getElementById(id) as HTMLDivElement, content, {
@@ -130,7 +130,7 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
   }
 }
 
-const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, data: API.MessageVO[], chat: API.User | undefined }> =
+const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, data: IM.MessageVO[], chat: API.User | undefined }> =
   (props) => {
     const end = useRef<HTMLDivElement>(null);
 
@@ -153,10 +153,10 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
             click: () => {
               if (vditor.getValue().trim() === '') return;
               connector?.send(JSON.stringify({
-                from: current.username,
-                to: chat.username,
+                send: current.username,
+                receive: chat.username,
                 content: vditor.getValue(),
-                createTime: now()
+                sendTime: now(),
               }));
               vditor.setValue('');
             }
@@ -222,7 +222,7 @@ const AccountSettings: React.FC = () => {
   const {connector, msg} = useWebsocket(`ws://localhost:11009/${currentUser?.user.username}`);
 
   const [active, setActive] = useState<string>('message');
-  const [msgList, setMsgList] = useState<API.MessageVO[]>([]);
+  const [msgList, setMsgList] = useState<IM.MessageVO[]>([]);
   const [friends, setFriends] = useState<API.User[]>([]);
   // 当前聊天的对象
   const [chat, setChat] = useState<API.User>();
@@ -237,7 +237,7 @@ const AccountSettings: React.FC = () => {
   const third = () => {
     if (active === 'message') return (
       <ChatWindow current={user} connector={connector.current} data={msgList
-        .filter(datum => (datum.from === user.username && datum.to === chat?.username) || (datum.to === user.username && datum.from === chat?.username))
+        .filter(datum => (datum.send === user.username && datum.receive === chat?.username) || (datum.receive === user.username && datum.send === chat?.username))
       } chat={chat}/>
     )
     return <div/>

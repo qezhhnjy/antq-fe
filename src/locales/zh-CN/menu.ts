@@ -46,6 +46,7 @@ export default {
   'menu.account.timeline': '时间轴记录',
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
+  'menu.account.chatInfo':'聊天信息',
   'menu.editor': '图形编辑器',
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',

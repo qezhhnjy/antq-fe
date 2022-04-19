@@ -136,6 +136,7 @@
       {path: '/account/center', name: 'center', component: './account/Center'},
       {path: '/account/settings', name: 'settings', component: './account/Settings'},
       {path: '/account/timeline', name: 'timeline', component: './account/TimelineRecord'},
+      {path: '/account/chatInfo', name: 'chatInfo', component: './account/ChatInfo'},
     ],
   },
   {

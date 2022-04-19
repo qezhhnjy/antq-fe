@@ -219,14 +219,6 @@ declare namespace API {
     optionalList?: FinanceOptional[];
   };
 
-  type MessageVO = {
-    id:string;
-    from: string;
-    to:string;
-    content:string;
-    createTime: string;
-  }
-
   type FinanceOptional = {
     id?: number;
     username?: string;

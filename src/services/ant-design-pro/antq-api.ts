@@ -335,3 +335,24 @@ export async function cronJob(jobAndTrigger: Quartz.JobAndTrigger, options?: { [
     ...(options || {}),
   })
 }
+
+export async function imMessageList(query: IM.MessageQuery, options?: { [key: string]: any }) {
+  return request<API.BaseResult<API.PageInfo<IM.MessageVO>>>('/antq/web/im-message/list', {
+    method: 'POST',
+    data: query,
+    ...(options || {}),
+  })
+}
+
+export async function imManagerGroup( options?: { [key: string]: any }) {
+  return request<API.BaseResult<any[]>>('/antq/web/im-manager/group', {
+    method: 'GET',
+    ...(options || {}),
+  })
+}
+export async function imManagerUsernameMap( options?: { [key: string]: any }) {
+  return request<API.BaseResult<string[]>>('/antq/web/im-manager/username-map', {
+    method: 'GET',
+    ...(options || {}),
+  })
+}

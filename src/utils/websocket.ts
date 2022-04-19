@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from 'react'
 
 const useWebsocket = (url: string) => {
   const connector = useRef<WebSocket | null>(null)
-  const [msg, setMsg] = useState<API.MessageVO>()
+  const [msg, setMsg] = useState<IM.MessageVO>()
   const [readyState, setReadyState] = useState({key: 0, value: '正在链接中'})
 
   const creatWebSocket = () => {
