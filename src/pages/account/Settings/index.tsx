@@ -23,10 +23,20 @@ const {Paragraph, Text,} = Typography;
 
 const FriendList: React.FC<{ data: API.User[], chat: API.User | undefined, setChat: Function, setMessages: Function }> = (props) => {
   const {data, chat, setChat} = props;
+  const [list, setList] = useState<any>();
+
+  useEffect(() => setList(data), [data]);
+
   return (
     <div>
       <div style={{height: 80, backgroundColor: '#EEE'}}>
-        <Search style={{margin: '30px', width: 240}} placeholder='搜索'/>
+        <Search style={{margin: '30px', width: 240}} onChange={v => {
+          const value = v.target.value.trim();
+          if (value) {
+            setList(data.filter(d => d.username?.toUpperCase().includes(value.toUpperCase())));
+          } else setList(data);
+        }}
+                placeholder='搜索'/>
       </div>
       <div style={{height: 640, width: 300, overflowY: 'auto', overflowX: 'hidden'}}>
         <ProList<API.User>
@@ -47,7 +57,7 @@ const FriendList: React.FC<{ data: API.User[], chat: API.User | undefined, setCh
               },
             };
           }}
-          dataSource={data}
+          dataSource={list}
         />
       </div>
     </div>
@@ -99,7 +109,6 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
   } else {
     return (
       <Space style={{float: float, marginRight: 15, marginTop: 5, marginBottom: 5}}>
-        <div id={id}/>
         <div style={{
           backgroundColor: 'rgba(22, 184, 243, 0.8)',
           borderRadius: 5,
@@ -112,6 +121,7 @@ const Message: React.FC<{ current: API.User, msg: API.MessageVO, chat: API.User 
             padding: '0 10px',
             maxWidth: 350,
           }}>
+            <div id={id}/>
           </Paragraph>
         </div>
         <Avatar src={current.avatar}/>
@@ -132,27 +142,27 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
         ctrlEnter: () => {
           // TODO 不知道怎么自定义快捷键实现换行
         },
-        toolbar: ['emoji', {
-          hotkey: 'Enter',
-          name: 'send',
-          tip: '发送',
-          tipPosition: 'n',
-          className: 'right',
-          icon: '<img width=16 style="float: right" src="/send.svg"/>',
-          click: () => {
-            if (vditor.getValue().trim() === '') return;
-            connector?.send(JSON.stringify({
-              from: current.username,
-              to: chat.username,
-              content: vditor.getValue(),
-              createTime: now()
-            }));
-            vditor.setValue('');
-          }
-        }],
+        toolbar: ['emoji', 'headings', 'bold', 'italic', 'strike', '|', 'check', 'link', 'table', 'content-theme', '|',
+          {
+            hotkey: 'Enter',
+            name: 'send',
+            tip: '发送',
+            tipPosition: 'n',
+            className: 'right',
+            icon: '<img width=16 style="float: right" src="/send.svg"/>',
+            click: () => {
+              if (vditor.getValue().trim() === '') return;
+              connector?.send(JSON.stringify({
+                from: current.username,
+                to: chat.username,
+                content: vditor.getValue(),
+                createTime: now()
+              }));
+              vditor.setValue('');
+            }
+          }],
         mode: 'ir',
         width: '100%',
-        counter: {enable: true, type: 'markdown'},
         height: 200,
         preview: {
           theme: {current: 'light'},
@@ -224,6 +234,15 @@ const AccountSettings: React.FC = () => {
     return <Other/>
   }
 
+  const third = () => {
+    if (active === 'message') return (
+      <ChatWindow current={user} connector={connector.current} data={msgList
+        .filter(datum => (datum.from === user.username && datum.to === chat?.username) || (datum.to === user.username && datum.from === chat?.username))
+      } chat={chat}/>
+    )
+    return <div/>
+  }
+
   useEffect(() => {
     if (msg) setMsgList([...msgList, msg])
   }, [msg]);
@@ -235,7 +254,7 @@ const AccountSettings: React.FC = () => {
   return (
     <div style={{width: '70%', height: '700px', margin: "30px auto"}}>
       <Row style={{height: '100%'}}>
-        <Col span={1.5} style={{backgroundColor: '#EEE'}}>
+        <Col span={1.6} style={{backgroundColor: '#EEE'}}>
           <Space direction='vertical'>
             <Avatar size='large' icon={<img alt="" src={currentUser?.user?.avatar}/>}
                     style={{margin: '40px 10px 5px 10px'}}/>
@@ -253,9 +272,7 @@ const AccountSettings: React.FC = () => {
           {second()}
         </Col>
         <Col span={16} style={{backgroundColor: '#F0F0F0'}}>
-          <ChatWindow current={user} connector={connector.current} data={msgList
-            .filter(datum => (datum.from === user.username && datum.to === chat?.username) || (datum.to === user.username && datum.from === chat?.username))
-          } chat={chat}/>
+          {third()}
         </Col>
       </Row>
     </div>
