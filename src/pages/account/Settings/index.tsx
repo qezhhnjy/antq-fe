@@ -195,7 +195,8 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
                    overflowX: 'auto',
                  }}>
             {
-              data.map(datum => <Message key={datum.id} current={current} msg={datum} chat={chat}/>)
+              data.filter(datum => current.username === datum.from || current.username === datum.to)
+                .map(datum => <Message key={datum.id} current={current} msg={datum} chat={chat}/>)
             }
             <div style={{height: 1}} ref={end}/>
           </Space>
