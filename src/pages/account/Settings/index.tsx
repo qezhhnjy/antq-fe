@@ -195,8 +195,7 @@ const ChatWindow: React.FC<{ current: API.User, connector: WebSocket | null, dat
                    overflowX: 'auto',
                  }}>
             {
-              data.filter(datum => current.username === datum.from || current.username === datum.to)
-                .map(datum => <Message key={datum.id} current={current} msg={datum} chat={chat}/>)
+              data.map(datum => <Message key={datum.id} current={current} msg={datum} chat={chat}/>)
             }
             <div style={{height: 1}} ref={end}/>
           </Space>
@@ -252,7 +251,9 @@ const AccountSettings: React.FC = () => {
           {second()}
         </Col>
         <Col span={16} style={{backgroundColor: '#F0F0F0'}}>
-          <ChatWindow current={currentUser?.user || {}} connector={connector.current} data={msgList} chat={chat}/>
+          <ChatWindow current={currentUser?.user || {}} connector={connector.current} data={msgList
+            .filter(datum => currentUser?.user.username === datum.from || currentUser?.user.username === datum.to)
+          } chat={chat}/>
         </Col>
       </Row>
     </div>
