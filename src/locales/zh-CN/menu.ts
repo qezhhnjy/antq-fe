@@ -46,7 +46,7 @@ export default {
   'menu.account.timeline': '时间轴记录',
   'menu.account.trigger': '触发报错',
   'menu.account.logout': '退出登录',
-  'menu.account.chatInfo':'聊天信息',
+  'menu.account.chatInfo': '聊天信息',
   'menu.editor': '图形编辑器',
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
@@ -80,4 +80,6 @@ export default {
   'menu.monitor.minio': '文件存储',
   'menu.monitor.quartz': '定时任务',
   'menu.monitor.redis': 'Redis监控',
+  'menu.robo': '萝卜投研',
+  'menu.robo.market-statistic': '时长统计',
 };

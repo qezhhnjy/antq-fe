@@ -1,6 +1,6 @@
 {
   "/umi.css": "/umi.fa9bb12d.css",
-  "/umi.js": "/umi.03d77e17.js",
+  "/umi.js": "/umi.38a5f098.js",
   "/t__plugin-layout__Layout.css": "/t__plugin-layout__Layout.4e0236f2.chunk.css",
   "/t__plugin-layout__Layout.js": "/t__plugin-layout__Layout.c678bba6.async.js",
   "/p__user__Login.css": "/p__user__Login.29ba317f.chunk.css",
@@ -16,6 +16,7 @@
   "/p__snowball__QuoteCenter.css": "/p__snowball__QuoteCenter.a9b6e6fd.chunk.css",
   "/p__snowball__QuoteCenter.js": "/p__snowball__QuoteCenter.ce7de791.async.js",
   "/p__snowball__StockInfo.js": "/p__snowball__StockInfo.bb1eaf5b.async.js",
+  "/p__robo__MarketStatistic.js": "/p__robo__MarketStatistic.57fb5e13.async.js",
   "/p__user__Manager.js": "/p__user__Manager.326590af.async.js",
   "/p__role__Manager.css": "/p__role__Manager.50bd47f6.chunk.css",
   "/p__role__Manager.js": "/p__role__Manager.ca8c38e2.async.js",

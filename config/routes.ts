@@ -5,7 +5,7 @@
     routes: [
       {
         path: '/user',
-        routes: [{name: 'login', path: '/user/login', component: './user/Login'}],
+        routes: [{ name: 'login', path: '/user/login', component: './user/Login' }],
       },
       {
         component: './404',
@@ -23,8 +23,8 @@
     name: 'finance',
     icon: 'fund',
     routes: [
-      {path: '/finance/stock', name: 'stock', icon: 'sliders', component: './finance/Stock'},
-      {path: '/finance/fund', name: 'fund', icon: 'fund', component: './finance/Fund'},
+      { path: '/finance/stock', name: 'stock', icon: 'sliders', component: './finance/Stock' },
+      { path: '/finance/fund', name: 'fund', icon: 'fund', component: './finance/Fund' },
     ],
   },
   {
@@ -32,9 +32,21 @@
     name: 'snowball',
     icon: 'sliders',
     routes: [
-      {path: '/snowball/quote-center', name: 'quote-center', component: './snowball/QuoteCenter'},
-      {path: '/snowball/stock-info', name: 'stock-info', component: './snowball/StockInfo'},
-    ]
+      { path: '/snowball/quote-center', name: 'quote-center', component: './snowball/QuoteCenter' },
+      { path: '/snowball/stock-info', name: 'stock-info', component: './snowball/StockInfo' },
+    ],
+  },
+  {
+    path: '/robo',
+    name: 'robo',
+    icon: 'sliders',
+    routes: [
+      {
+        path: '/robo/market-statistic',
+        name: 'market-statistic',
+        component: './robo/MarketStatistic',
+      },
+    ],
   },
   {
     path: '/system',
@@ -42,7 +54,7 @@
     icon: 'setting',
     access: 'system',
     routes: [
-      {path: '/system', redirect: '/system/user'},
+      { path: '/system', redirect: '/system/user' },
       {
         path: '/system/user',
         name: 'user',
@@ -76,7 +88,7 @@
     icon: 'setting',
     access: 'util',
     routes: [
-      {path: '/util', redirect: '/util/form'},
+      { path: '/util', redirect: '/util/form' },
       {
         path: '/util/form',
         name: 'form',
@@ -116,27 +128,25 @@
     icon: 'database',
     access: 'blog',
     routes: [
-      {path: '/blog/list', name: 'list', access: 'blog-list', component: './blog/BlogList'},
-      {path: '/blog/detail', component: './blog/BlogDetail'}
+      { path: '/blog/list', name: 'list', access: 'blog-list', component: './blog/BlogList' },
+      { path: '/blog/detail', component: './blog/BlogDetail' },
     ],
   },
   {
     path: '/report',
-    name:'report',
-    icon:'fileExcel',
-    routes:[
-      {path:'/report/jmreport',name: 'jmreport',component: './report/JMReport'},
-    ]
+    name: 'report',
+    icon: 'fileExcel',
+    routes: [{ path: '/report/jmreport', name: 'jmreport', component: './report/JMReport' }],
   },
   {
     path: '/account',
     name: 'account',
     icon: 'github',
     routes: [
-      {path: '/account/center', name: 'center', component: './account/Center'},
-      {path: '/account/settings', name: 'settings', component: './account/Settings'},
-      {path: '/account/timeline', name: 'timeline', component: './account/TimelineRecord'},
-      {path: '/account/chatInfo', name: 'chatInfo', component: './account/ChatInfo'},
+      { path: '/account/center', name: 'center', component: './account/Center' },
+      { path: '/account/settings', name: 'settings', component: './account/Settings' },
+      { path: '/account/timeline', name: 'timeline', component: './account/TimelineRecord' },
+      { path: '/account/chatInfo', name: 'chatInfo', component: './account/ChatInfo' },
     ],
   },
   {
@@ -144,14 +154,14 @@
     name: 'monitor',
     icon: 'monitor',
     routes: [
-      {path: '/system-monitor/nacos', name: 'nacos', component: './monitor/Nacos'},
-      {path: '/system-monitor/admin', name: 'admin', component: './monitor/Admin'},
-      {path: '/system-monitor/sentinel', name: 'sentinel', component: './monitor/Sentinel'},
-      {path: '/system-monitor/system', name: 'system', component: './monitor/System'},
-      {path: '/system-monitor/minio', name: 'minio', component: './monitor/Minio'},
-      {path: '/system-monitor/quartz', name: 'quartz', component: './monitor/Quartz'},
-      {path: '/system-monitor/redis', name: 'redis', component: './monitor/Redis'},
-    ]
+      { path: '/system-monitor/nacos', name: 'nacos', component: './monitor/Nacos' },
+      { path: '/system-monitor/admin', name: 'admin', component: './monitor/Admin' },
+      { path: '/system-monitor/sentinel', name: 'sentinel', component: './monitor/Sentinel' },
+      { path: '/system-monitor/system', name: 'system', component: './monitor/System' },
+      { path: '/system-monitor/minio', name: 'minio', component: './monitor/Minio' },
+      { path: '/system-monitor/quartz', name: 'quartz', component: './monitor/Quartz' },
+      { path: '/system-monitor/redis', name: 'redis', component: './monitor/Redis' },
+    ],
   },
   {
     path: '/',
