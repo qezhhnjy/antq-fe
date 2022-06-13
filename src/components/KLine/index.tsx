@@ -57,9 +57,9 @@ type EChartsOption = echarts.ComposeOption<| ToolboxComponentOption
   | BarSeriesOption>;
 
 
-export const upColor = '#ec0000';
-export const upBorderColor = '#ba0000';
-export const downColor = '#00da3c';
+export const upColor = '#F85858';
+export const upBorderColor = '#ca3333';
+export const downColor = '#3DBD7D';
 export const downBorderColor = '#00bF28';
 export const normalColor = '#999';
 
