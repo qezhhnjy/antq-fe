@@ -37,7 +37,7 @@ export default {
       changeOrigin: true,
       credentials: "include",
       headers: {
-        Cookie: 'xq_a_token=d9e55dabd156b1ce81e221878e2d9897ccea8920'
+        Cookie: 'xq_a_token=83886f7ef4add65155e8ef54dfc3e739afa7472a'
       },
       pathRewrite: {'^/snowball-api': ''},
     },
@@ -46,7 +46,7 @@ export default {
       changeOrigin: true,
       credentials: "include",
       headers: {
-        Cookie: 'xq_a_token=d9e55dabd156b1ce81e221878e2d9897ccea8920'
+        Cookie: 'xq_a_token=83886f7ef4add65155e8ef54dfc3e739afa7472a'
       },
       pathRewrite: {'^/snowball-stock': '/v5'},
     },
