@@ -21,7 +21,7 @@ const Minio: React.FC<any> = (props) => {
 
   return (
     <Space direction='vertical'>
-      <Button type='primary' onClick={() => window.open('http://120.26.168.94:11006')}>MINIO</Button>
+      <Button type='primary' onClick={() => window.open('http://43.142.106.115:11006')}>MINIO</Button>
       <ImgCrop
         quality={0.1}
         rotate>
