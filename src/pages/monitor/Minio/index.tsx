@@ -23,7 +23,7 @@ const Minio: React.FC<any> = (props) => {
     <Space direction='vertical'>
       <Button type='primary' onClick={() => window.open('http://43.142.106.115:11006')}>MINIO</Button>
       <ImgCrop
-        quality={0.1}
+        quality={0.8}
         rotate>
         <Upload
           action='/antq/web/minio/upload'
