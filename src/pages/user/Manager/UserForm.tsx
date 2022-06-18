@@ -85,7 +85,6 @@ const UserForm: React.FC<{
         />
 
         <ImgCrop
-          quality={0.5}
           rotate>
           <Upload
             action='/antq/web/minio/upload'
