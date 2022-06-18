@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
 
   return (
     <DefaultFooter
-      copyright={`${currentYear} ${defaultMessage}`}
+      copyright={`${currentYear} ${defaultMessage}(V6.18)`}
     />
   );
 };
