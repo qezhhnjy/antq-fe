@@ -47,4 +47,9 @@ yarn add
 # npm相关
 npm cache clean -f
 npm install n -g -f
+
+# yarn更新依赖
+yarn add vue@latest
+yarn upgrade-interactive  --latest
+yarn upgrade
 ```
