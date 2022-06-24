@@ -1,6 +1,6 @@
 {
   "/umi.css": "/umi.fa9bb12d.css",
-  "/umi.js": "/umi.1e824830.js",
+  "/umi.js": "/umi.ba5f7243.js",
   "/t__plugin-layout__Layout.css": "/t__plugin-layout__Layout.4e0236f2.chunk.css",
   "/t__plugin-layout__Layout.js": "/t__plugin-layout__Layout.c678bba6.async.js",
   "/p__user__Login.css": "/p__user__Login.29ba317f.chunk.css",
@@ -44,7 +44,7 @@
   "/p__account__ChatInfo.js": "/p__account__ChatInfo.a1ffad5a.async.js",
   "/p__monitor__Nacos.js": "/p__monitor__Nacos.f86e61dc.async.js",
   "/p__monitor__Admin.js": "/p__monitor__Admin.dd0bf067.async.js",
-  "/p__monitor__Sentinel.js": "/p__monitor__Sentinel.573d0597.async.js",
+  "/p__monitor__Sentinel.js": "/p__monitor__Sentinel.5ea00743.async.js",
   "/p__monitor__System.css": "/p__monitor__System.c36bfef4.chunk.css",
   "/p__monitor__System.js": "/p__monitor__System.4f263490.async.js",
   "/p__monitor__Minio.css": "/p__monitor__Minio.e5663c06.chunk.css",
