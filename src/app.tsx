@@ -5,6 +5,7 @@ import {history} from 'umi';
 import RightContent from '@/components/RightContent';
 import {userInfo} from './services/ant-design-pro/antq-api';
 import {RequestConfig} from '@@/plugin-request/request';
+import Footer from './components/Footer';
 
 // const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -102,7 +103,7 @@ export const layout: RunTimeLayoutConfig = ({initialState}) => {
           content: initialState?.currentUser?.user.username,
         },
     */
-    // footerRender: () => <Footer/>,
+    footerRender: () => <Footer/>,
     onPageChange: () => {
       const {location} = history;
       // 如果没有登录，重定向到 login

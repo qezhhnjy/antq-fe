@@ -107,7 +107,6 @@ const MenuForm: React.FC<{
         label="菜单图标"
         addonAfter={
           <ImgCrop
-            quality={0.1}
             rotate>
             <Upload
               action='/antq/web/minio/upload'
