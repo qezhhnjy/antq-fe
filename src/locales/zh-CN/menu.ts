@@ -82,4 +82,6 @@ export default {
   'menu.monitor.redis': 'Redis监控',
   'menu.robo': '萝卜投研',
   'menu.robo.market-statistic': '时长统计',
+  'menu.outdoor': '户外运动',
+  'menu.outdoor.hiking-trail': '徒步路线'
 };

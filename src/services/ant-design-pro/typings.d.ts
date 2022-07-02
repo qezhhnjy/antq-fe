@@ -1,6 +1,21 @@
 // @ts-ignore
 /* eslint-disable */
 
+declare namespace Outdoor {
+  type HikingTrail = {
+    id?: string;
+    avatar?: string;
+    title?: string;
+    summary?: string;
+    difficulty?: number;
+    recommend?: number;
+    icon?: string;
+    tags?: string;
+    iframe?: string;
+    detail?: string
+  }
+}
+
 declare namespace API {
   type CurrentUser = {
     name?: string;
