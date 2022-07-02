@@ -12,7 +12,11 @@ declare namespace Outdoor {
     icon?: string;
     tags?: string;
     iframe?: string;
-    detail?: string
+    detail?: string;
+    distance?: number;
+    elevationRise?: number;
+    elevationFall?: number;
+    elevation?: number;
   }
 }
 
@@ -330,6 +334,8 @@ declare namespace API {
     search?: string;
     pageNum?: number;
     pageSize?: number;
+    orderBy?: string;
+    order?: string;
   };
 
   type PageInfo<T> = {

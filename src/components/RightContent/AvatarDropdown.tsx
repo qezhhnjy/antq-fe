@@ -28,6 +28,7 @@ const loginOut = async () => {
       }),
     });
   }
+  localStorage.removeItem('token');
 };
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = () => {

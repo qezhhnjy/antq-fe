@@ -3,10 +3,12 @@ import ProTable, {ActionType, ProColumns} from "@ant-design/pro-table";
 import React, {useRef, useState} from "react";
 import {
   DeleteOutlined,
+  FallOutlined,
   FormOutlined,
   FrownOutlined,
   MehOutlined,
   PlusCircleOutlined,
+  RiseOutlined,
   SearchOutlined,
   SmileOutlined
 } from "@ant-design/icons";
@@ -22,6 +24,7 @@ import Search from "antd/lib/input/Search";
 import TrailForm from "@/pages/outdoor/HikingTrail/TrailForm";
 import DeleteButton from "@/components/DeleteButton";
 import {ModalForm} from "@ant-design/pro-form";
+import {Statistic} from "@ant-design/pro-card";
 
 export const difficultyRate: Record<number, React.ReactNode> = {
   1: <SmileOutlined/>,
@@ -55,16 +58,32 @@ const HikingTrail: React.FC<any> = (props) => {
     {
       title: '图标',
       dataIndex: 'avatar',
+      width: 50,
       render: (avatar) => <Avatar src={avatar}/>,
     },
     {
       title: '名称',
       dataIndex: 'title',
+      width: 100,
       render: (title) => (
         <Tag style={{fontSize: '14px'}} color={ZIMA_BLUE}>
           {title}
         </Tag>
       ),
+    },
+    {
+      title: '距离(米)', dataIndex: 'distance', sorter: true,
+      width: 100,
+      render: (distance) =>
+        <Statistic valueStyle={{fontSize: 15, color: 'red'}} value={Number(distance) || '-'}/>
+    },
+    {
+      title: <RiseOutlined/>, dataIndex: 'elevationRise', width: 60,
+      render: rise => <Statistic valueStyle={{color: 'red'}} value={Number(rise) || '-'}/>
+    },
+    {
+      title: <FallOutlined/>, dataIndex: 'elevationFall', width: 60,
+      render: fall => <Statistic valueStyle={{color: 'green'}} value={Number(fall) || '-'}/>
     },
     {
       title: '描述',
@@ -73,14 +92,18 @@ const HikingTrail: React.FC<any> = (props) => {
     {
       title: '难度系数',
       dataIndex: 'difficulty',
+      width: 200,
+      sorter: true,
       render: (difficulty) => <Rate character={({index}: { index: number }) => difficultyRate[index + 1]}
-                                    allowHalf disabled value={Number(difficulty)}/>
+                                    allowHalf disabled value={Number(difficulty) / 2}/>
     },
     {
       title: '推荐指数',
       dataIndex: 'recommend',
+      width: 200,
+      sorter: true,
       render: (recommend) => <Rate character={({index}: { index: number }) => recommendRate[index + 1]}
-                                   allowHalf disabled value={Number(recommend)}/>
+                                   allowHalf disabled value={Number(recommend) / 2}/>
     },
     {
       title: '操作',
@@ -92,10 +115,10 @@ const HikingTrail: React.FC<any> = (props) => {
           <ModalForm
             key='detail'
             width='90%'
-            style={{top:0}}
+            style={{top: 0}}
             trigger={<Button type="primary">FatMap</Button>}
             submitter={false}
-            modalProps={{closable: false, bodyStyle: {height: 700, padding: 0}}}
+            modalProps={{closable: false, bodyStyle: {height: 800, padding: 0}}}
           >
             <div dangerouslySetInnerHTML={{__html: trail.iframe || ''}}/>
           </ModalForm>,
@@ -132,10 +155,18 @@ const HikingTrail: React.FC<any> = (props) => {
           pageSize: 10,
         }}
         actionRef={actionRef}
-        request={async (params) => {
+        request={async (params, sorter) => {
           // 表单搜索项会从 params 传入，传递给后端接口。
           const {pageSize, current: pageNum} = params;
-          return hikingTrailList({pageSize, pageNum, search}).then((result) => ({
+          const query: API.Query = {pageSize, pageNum, search};
+          if (sorter) {
+            for (const key in sorter) {
+              query.orderBy = key;
+              const sort = sorter[key];
+              query.order = sort === 'descend' ? 'desc' : sort === 'ascend' ? 'asc' : undefined;
+            }
+          }
+          return hikingTrailList(query).then((result) => ({
             data: result.data?.list,
             success: true,
             total: result.data?.total,

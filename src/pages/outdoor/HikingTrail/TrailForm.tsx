@@ -33,7 +33,13 @@ const TrailForm: React.FC<{
         },
       }}
       onFinish={async (params) => {
-        const response = await onFinish({...params, id: info?.id});
+        const {difficulty, recommend} = params;
+        const response = await onFinish({
+          ...params,
+          id: info?.id,
+          difficulty: difficulty * 2,
+          recommend: recommend * 2
+        });
         if (response.code === 1000) message.success(`添加成功`);
         await table.current?.reload();
         return true;
@@ -107,15 +113,52 @@ const TrailForm: React.FC<{
         />
       </ProFormGroup>
       <ProFormGroup>
+        <ProFormText
+          width="md"
+          name="distance"
+          label="距离(米)"
+          initialValue={info.distance}
+          rules={[{pattern: RegExp('\\dn*'), message: '距离只能为整数', whitespace: true}]}
+          placeholder="请输入线路距离"
+          prefixCls='m'
+        />
+        <ProFormText
+          width="md"
+          name="elevation"
+          label="平均海拔(米)"
+          initialValue={info.elevation}
+          rules={[{pattern: RegExp('\\dn*'), message: '海拔只能为整数', whitespace: true}]}
+          placeholder="请输入平均海拔"
+        />
+      </ProFormGroup>
+      <ProFormGroup>
+        <ProFormText
+          width="md"
+          name="elevationRise"
+          label="累计爬升(米)"
+          initialValue={info.elevationRise}
+          rules={[{pattern: RegExp('\\dn*'), message: '累计爬升只能为整数', whitespace: true}]}
+          placeholder="请输入累计爬升"
+          prefixCls='m'
+        />
+        <ProFormText
+          width="md"
+          name="elevationFall"
+          label="累计下降(米)"
+          initialValue={info.elevationFall}
+          rules={[{pattern: RegExp('\\dn*'), message: '累计下降只能为整数', whitespace: true}]}
+          placeholder="请输入累计下降"
+        />
+      </ProFormGroup>
+      <ProFormGroup>
         <ProFormRate width={330} name='difficulty'
                      fieldProps={{character: ({index}: { index: number }) => difficultyRate[index + 1]}}
-                     label='难度系数' initialValue={Number(info.difficulty)}/>
+                     label='难度系数' initialValue={Number(info.difficulty) / 2}/>
         <ProFormRate width={330} name='recommend'
                      fieldProps={{character: ({index}: { index: number }) => recommendRate[index + 1]}}
-                     label='推荐指数' initialValue={Number(info.recommend)}/>
+                     label='推荐指数' initialValue={Number(info.recommend) / 2}/>
       </ProFormGroup>
     </ModalForm>
   );
 };
-
 export default TrailForm;
