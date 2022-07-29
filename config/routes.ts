@@ -141,6 +141,14 @@
     ],
   },
   {
+    path:'/album',
+    name:'album',
+    icon:'picture',
+    routes: [
+      {path:'/album/detail',name:'detail',component: './album/AlbumDetail'}
+    ]
+  },
+  {
     path: '/report',
     name: 'report',
     icon: 'fileExcel',

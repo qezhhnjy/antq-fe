@@ -338,6 +338,15 @@ declare namespace API {
     order?: string;
   };
 
+  type AlbumQuery = {
+    search?: string;
+    pageNum?: number;
+    pageSize?: number;
+    orderBy?: string;
+    order?: string;
+    albumId?: string;
+  };
+
   type PageInfo<T> = {
     pageNum?: number;
     pageSize?: number;

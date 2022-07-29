@@ -83,5 +83,7 @@ export default {
   'menu.robo': '萝卜投研',
   'menu.robo.market-statistic': '时长统计',
   'menu.outdoor': '户外运动',
-  'menu.outdoor.hiking-trail': '徒步路线'
+  'menu.outdoor.hiking-trail': '徒步路线',
+  'menu.album': '图集相册',
+  'menu.album.detail': '图集详情',
 };
