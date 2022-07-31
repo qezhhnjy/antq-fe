@@ -47,7 +47,7 @@ const AlbumDetail: React.FC = () => {
 
 
   return (
-    <>
+    <div style={{marginLeft: '10%', marginRight: '10%'}}>
       <PageHeader
         style={{border: '1px solid rgb(235, 237, 240)'}}
         onBack={() => history.goBack()}
@@ -72,8 +72,7 @@ const AlbumDetail: React.FC = () => {
                   if (code === 1000) {
                     setPicInfos([...picInfos, data]);
                     message.success('上传成功');
-                  }
-                  else message.error(msg);
+                  } else message.error(msg);
                 }
               }}
             >
@@ -129,8 +128,7 @@ const AlbumDetail: React.FC = () => {
                 <img src={info.url}
                      style={full ?
                        {
-                         maxWidth: '58%',
-                         minWidth: '58%',
+                         maxWidth: '98%',
                          padding: 5,
                          margin: '1%'
                        } : {
@@ -144,7 +142,7 @@ const AlbumDetail: React.FC = () => {
           ))}
         </PhotoProvider>
       </InfiniteScroll>
-    </>
+    </div>
   );
 }
 
