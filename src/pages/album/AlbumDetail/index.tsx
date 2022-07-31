@@ -66,11 +66,12 @@ const AlbumDetail: React.FC = () => {
               data={{albumId: id}}
               headers={{Authorization: token?.token_type + ' ' + token?.access_token}}
               showUploadList={false}
+              listType='picture'
               onChange={info => {
                 if (info.file.status === 'done') {
                   const {data, code, msg} = info.file.response;
                   if (code === 1000) {
-                    setPicInfos([...picInfos, data]);
+                    setPicInfos([data, ...picInfos]);
                     message.success('上传成功');
                   } else message.error(msg);
                 }
