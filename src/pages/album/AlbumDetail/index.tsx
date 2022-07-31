@@ -6,6 +6,7 @@ import {PhotoProvider, PhotoView} from "react-photo-view";
 import 'react-photo-view/dist/react-photo-view.css';
 import {history} from "@@/core/history";
 import {ZIMA_BLUE} from "@/utils/common";
+import './index.less';
 import {CloudUploadOutlined, DeleteOutlined, FullscreenExitOutlined, FullscreenOutlined} from "@ant-design/icons";
 
 const pageSize = 10;
@@ -47,7 +48,7 @@ const AlbumDetail: React.FC = () => {
 
 
   return (
-    <div style={{marginLeft: '10%', marginRight: '10%'}}>
+    <div style={{margin: '0 6%'}}>
       <PageHeader
         style={{border: '1px solid rgb(235, 237, 240)'}}
         onBack={() => history.goBack()}
@@ -89,15 +90,12 @@ const AlbumDetail: React.FC = () => {
                   <FullscreenOutlined style={{fontSize: 20}}/>
               }
             </div>
-          </Space>}
-      >
+          </Space>}>
         <Content
           left
           extraContent={<Image width={120} height={120} preview={false} style={{objectFit: "cover"}} src={cover}
                                alt={title}/>}>
-          <Typography.Title level={4}><a
-            href='https://baike.baidu.com/item/%E6%9D%A8%E5%B9%82' target='_blank'
-            rel='noreferrer'>{model}</a></Typography.Title>
+          <Typography.Title level={4}>{model}</Typography.Title>
           <Typography.Paragraph>{summary}</Typography.Paragraph>
         </Content>
       </PageHeader>
@@ -111,37 +109,32 @@ const AlbumDetail: React.FC = () => {
         endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         scrollableTarget="scrollableDiv"
       >
-        <PhotoProvider bannerVisible={false} maskOpacity={.5}>
-          {picInfos.map((info) => (
-            <Space key={info.id} direction='vertical' style={{border: '1px solid rgba(80,80,240,.05)', margin: 5}}>
-              {del ? <DeleteOutlined
-                onClick={() => {
-                  picDelete(info.id).then(() => setPicInfos([...picInfos.filter(i => i.id !== info.id)]));
-                }}
-                style={{
-                  fontSize: 20,
-                  textAlign: 'end',
-                  visibility: del ? 'visible' : 'hidden',
-                  color: 'orangered',
-                  opacity: .6
-                }}/> : <></>}
-              <PhotoView src={info.url}>
-                <img src={info.url}
-                     style={full ?
-                       {
-                         maxWidth: '98%',
-                         padding: 5,
-                         margin: '1%'
-                       } : {
-                         maxHeight: 300,
-                         padding: 5,
-                         margin: 5
-                       }}
-                     alt=''/>
-              </PhotoView>
-            </Space>
-          ))}
-        </PhotoProvider>
+        <div className='photo'>
+          <PhotoProvider bannerVisible={false} maskOpacity={.5}>
+            {picInfos.map((info) => (
+              <Space key={info.id} direction='vertical'
+                     style={{margin: 10, border: '1px solid rgba(158,158,158,.05)'}}>
+                {del ? <DeleteOutlined
+                  onClick={() => {
+                    picDelete(info.id).then(() => setPicInfos([...picInfos.filter(i => i.id !== info.id)]));
+                  }}
+                  style={{
+                    fontSize: 20,
+                    textAlign: 'end',
+                    visibility: del ? 'visible' : 'hidden',
+                    color: 'orangered',
+                    opacity: .6
+                  }}/> : <></>}
+                <PhotoView src={info.url}>
+                  {
+                    full ? <img src={info.url} style={{maxWidth: '98%', margin: '1%',}} alt=''/> :
+                      <img src={info.url} className='img' style={{maxHeight: 280, margin: 5,}} alt=''/>
+                  }
+                </PhotoView>
+              </Space>
+            ))}
+          </PhotoProvider>
+        </div>
       </InfiniteScroll>
     </div>
   );

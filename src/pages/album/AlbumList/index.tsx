@@ -24,6 +24,7 @@ import {ModalForm, ProFormGroup, ProFormText, ProFormTextArea, ProFormUploadDrag
 import {Content} from "@/pages/album/AlbumDetail";
 import {ZIMA_BLUE} from "@/utils/common";
 import {ALBUM_DETAIL_PATH, pushToInfo} from "@/utils/pushUtil";
+import './index.less';
 
 const add = '添加图集';
 const token = JSON.parse(localStorage.getItem('token') || '{}');
@@ -119,7 +120,15 @@ const AlbumAdd: React.FC<{ refresh: VoidFunction }> = (props) => {
         label="描述"
         placeholder="请输入描述信息"
       />
-      <ProFormUploadDragger width={690} max={1} label="图集ZIP" name="file"/>
+      <ProFormUploadDragger width={690} fieldProps={{
+        beforeUpload: (file) => {
+          if (file.size / (1024 * 1024) > 100) {
+            message.success('上传文件不能超过100MB');
+            return Upload.LIST_IGNORE;
+          }
+          return false;
+        }
+      }} max={1} label="图集ZIP" name="file"/>
     </ProFormGroup>
   </ModalForm>;
 }
@@ -177,21 +186,22 @@ const AlbumList: React.FC<any> = () => {
         endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
         scrollableTarget="scrollableDiv"
       >
-        <Row>
+        <Row style={{padding: 10}}>
           {albums.map((album) => (
             <Col span={6} key={album.id} style={{padding: 6}}>
               <Card
-                style={{padding: 4}}
+                style={{padding: 5}}
                 bordered
                 hoverable
                 size='small'
                 cover={
-                  <Image width='100%' height={240} preview={false} style={{objectFit: "cover"}} src={album.cover}
+                  <Image className='card' width='100%' height={240} preview={false}
+                         style={{objectFit: "cover", borderRadius: 2}} src={album.cover}
                          onClick={() => pushToInfo(ALBUM_DETAIL_PATH, album)}
                          alt={album.title}/>
                 }
               >
-                <Typography.Title level={4}>{album.title}</Typography.Title>
+                <Typography.Title level={5}>{album.title}</Typography.Title>
                 <Content
                   extraContent={<AlbumDelete album={album} refresh={refresh}/>}
                 >
