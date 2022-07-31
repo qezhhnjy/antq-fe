@@ -86,4 +86,5 @@ export default {
   'menu.outdoor.hiking-trail': '徒步路线',
   'menu.album': '图集相册',
   'menu.album.detail': '图集详情',
+  'menu.album.list': '图集列表',
 };

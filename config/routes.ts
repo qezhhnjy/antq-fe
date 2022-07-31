@@ -141,11 +141,15 @@
     ],
   },
   {
-    path:'/album',
-    name:'album',
-    icon:'picture',
+    path: '/album',
+    name: 'album',
+    icon: 'picture',
     routes: [
-      {path:'/album/detail',name:'detail',component: './album/AlbumDetail'}
+      {path: '/album/list', name: 'list', component: './album/AlbumList'},
+      {
+        path: '/album/detail', name: 'detail', component: './album/AlbumDetail',
+        hideInMenu: true,  footerRender: false, menuRender: false
+      },
     ]
   },
   {

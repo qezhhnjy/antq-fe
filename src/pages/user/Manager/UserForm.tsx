@@ -35,7 +35,7 @@ const UserForm: React.FC<{
       }}
       onFinish={async (params) => {
         const response = await onFinish(
-          {...params, id: user?.id},
+          {...params, id: user?.id, avatar},
           params.roles.map((id: string) => ({id})),
         );
         if (response.code === 1000) message.success(`添加成功`);
