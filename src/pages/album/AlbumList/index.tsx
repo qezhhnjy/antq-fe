@@ -67,7 +67,7 @@ const AlbumAdd: React.FC<{ refresh: VoidFunction }> = (props) => {
   const {refresh} = props;
   return <ModalForm
     title={<b>{add}</b>}
-    width={800}
+    width={740}
     trigger={<Button type='primary'><FolderAddOutlined style={{fontSize: 16}}/></Button>}
     modalProps={{destroyOnClose: true}}
     onFinish={async (params) => {
