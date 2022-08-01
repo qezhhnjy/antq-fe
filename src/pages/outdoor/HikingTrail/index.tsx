@@ -3,12 +3,10 @@ import ProTable, {ActionType, ProColumns} from "@ant-design/pro-table";
 import React, {useRef, useState} from "react";
 import {
   DeleteOutlined,
-  FallOutlined,
   FormOutlined,
   FrownOutlined,
   MehOutlined,
   PlusCircleOutlined,
-  RiseOutlined,
   SearchOutlined,
   SmileOutlined
 } from "@ant-design/icons";
@@ -72,18 +70,18 @@ const HikingTrail: React.FC<any> = (props) => {
       ),
     },
     {
-      title: '距离(米)', dataIndex: 'distance', sorter: true,
+      title: '距离(km)', dataIndex: 'distance', sorter: true,
       width: 100,
       render: (distance) =>
-        <Statistic valueStyle={{fontSize: 15, color: 'red'}} value={Number(distance) || '-'}/>
+        <Statistic valueStyle={{fontSize: 18, color: 'black'}} value={Number(distance) / 1000 || '-'}/>
     },
     {
-      title: <RiseOutlined/>, dataIndex: 'elevationRise', width: 60,
-      render: rise => <Statistic valueStyle={{color: 'red'}} value={Number(rise) || '-'}/>
+      title: '爬升(m)', dataIndex: 'elevationRise', width: 70,
+      render: rise => <Statistic valueStyle={{fontSize: 14, color: 'black'}} value={Number(rise) || '-'}/>
     },
     {
-      title: <FallOutlined/>, dataIndex: 'elevationFall', width: 60,
-      render: fall => <Statistic valueStyle={{color: 'green'}} value={Number(fall) || '-'}/>
+      title: '下降(m)', dataIndex: 'elevationFall', width: 70,
+      render: fall => <Statistic valueStyle={{fontSize: 14, color: 'black'}} value={Number(fall) || '-'}/>
     },
     {
       title: '描述',

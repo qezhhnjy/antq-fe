@@ -80,8 +80,7 @@ const AlbumDetail: React.FC = () => {
                 }
               }}
             >
-              <Button
-                icon={<CloudUploadOutlined/>} type='primary'>上传</Button>
+              <Button icon={<CloudUploadOutlined/>} type='primary'>上传</Button>
             </Upload>
             <DeleteOutlined key='del' onClick={() => setDel(!del)}
                             style={{fontSize: 20, color: del ? 'gray' : 'orangered'}}/>
@@ -101,8 +100,9 @@ const AlbumDetail: React.FC = () => {
           <Typography.Paragraph>{summary}</Typography.Paragraph>
         </Content>
       </PageHeader>
-      <Divider orientation="left" plain dashed><Typography.Text type='secondary' style={{fontSize: 12}}
-                                                                strong>图片展示</Typography.Text></Divider>
+      <Divider orientation="left" plain dashed>
+        <Typography.Text type='secondary' style={{fontSize: 12}} strong>图片展示</Typography.Text>
+      </Divider>
       <InfiniteScroll
         dataLength={picInfos?.length || 0}
         next={() => loadData(id)}

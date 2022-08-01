@@ -23,7 +23,8 @@
     name: 'outdoor',
     icon: 'home',
     routes: [
-      {path: '/outdoor/hiking-trail', name: 'hiking-trail', icon: 'home', component: './outdoor/HikingTrail'}
+      {path: '/outdoor/hiking-trail', name: 'hiking-trail', icon: 'home', component: './outdoor/HikingTrail'},
+      {path: '/outdoor/fat-map-card-page', name: 'fat-map-card-page', icon: 'home', component: './outdoor/FatMapCardPage'}
     ]
   },
   {
