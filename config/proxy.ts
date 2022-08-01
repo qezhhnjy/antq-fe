@@ -22,7 +22,7 @@ export default {
       pathRewrite: {'^/ws': ''},
     },
     '/antq': {
-      target: 'http://localhost:11000/',
+      target: 'http://43.142.106.115:11000/',
       changeOrigin: true,
       pathRewrite: {'^/antq': ''},
     },

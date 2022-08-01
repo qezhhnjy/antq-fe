@@ -8,6 +8,7 @@ import {history} from "@@/core/history";
 import {ZIMA_BLUE} from "@/utils/common";
 import './index.less';
 import {CloudUploadOutlined, DeleteOutlined, FullscreenExitOutlined, FullscreenOutlined} from "@ant-design/icons";
+import {ALBUM_LIST_PATH, pushToInfo} from "@/utils/pushUtil";
 
 const pageSize = 10;
 const token = JSON.parse(localStorage.getItem('token') || '{}');
@@ -28,7 +29,7 @@ export const Content: React.FC<{ extraContent: React.ReactNode, left?: boolean }
 }
 const AlbumDetail: React.FC = () => {
   // @ts-ignore
-  const [album] = useState<Album.Album>(history?.location?.state || {id: ''});
+  const [album] = useState<Album.Album>(history?.location?.state || {});
   const {id, title, station, cover, count, tag, author, model, summary} = album;
   const [pageInfo, setPageInfo] = useState<API.PageInfo<Album.PicInfo>>();
   const [picInfos, setPicInfos] = useState<Album.PicInfo[]>([]);
@@ -43,7 +44,8 @@ const AlbumDetail: React.FC = () => {
     });
 
   useEffect(() => {
-    loadData(id);
+    if (id === undefined) pushToInfo(ALBUM_LIST_PATH, null);
+    else loadData(id);
   }, []);
 
 
